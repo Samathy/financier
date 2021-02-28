@@ -7,8 +7,8 @@
         "Sort Code": "",
         "Account Number":"",
         "Transaction Description": "description",
-        "Debit Amount": "in",
-        "Credit Amount": "out",
+        "Debit Amount": "out",
+        "Credit Amount": "in",
         "Balance": "balance"
     }
 }
