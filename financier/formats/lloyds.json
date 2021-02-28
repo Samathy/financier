@@ -1,0 +1,14 @@
+{
+    "name": "lloyds",
+    "fields":
+    {
+        "Transaction Date": "date",
+        "Transaction Type": "",
+        "Sort Code": "",
+        "Account Number":"",
+        "Transaction Description": "description",
+        "Debit Amount": "in",
+        "Credit Amount": "out",
+        "Balance": "balance"
+    }
+}
