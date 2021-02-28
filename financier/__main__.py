@@ -16,6 +16,4 @@ format_filename = os.path.dirname(__file__) / pathlib.Path("formats") / f"{args.
 filename = pathlib.Path(args.filename[0]).expanduser()
 output_filename = pathlib.Path(args.output[0]).expanduser()
 
-breakpoint()
-
 main(format_filename, filename, output_filename)
