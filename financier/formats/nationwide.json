@@ -1,0 +1,16 @@
+{
+    "name": "nationwide",
+    "fields":
+    {
+        "Date": "date",
+        "Transaction type": "",
+        "Description": "description",
+        "Paid out": "out",
+        "Paid in": "in",
+        "Balance": "balance"
+    },
+    "options":
+    {
+        "remove": ["£"]
+    }
+}

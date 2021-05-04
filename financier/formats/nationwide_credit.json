@@ -1,0 +1,15 @@
+{
+    "name": "nationwide_credit",
+    "fields":
+    {
+        "Date": "date",
+        "Transactions": "description",
+        "Location": "",
+        "Paid out": "out",
+        "Paid in": "in"
+    },
+    "options":
+    {
+        "remove": ["£"]
+    }
+}

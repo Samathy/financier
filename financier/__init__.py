@@ -1,8 +1,26 @@
+# -*- coding: utf-8 -*-
 import csv
 import json
 import pathlib
+import shutil
 
 output_fieldnames = [ "date", "description", "in", "out", "balance", ]
+
+temp_path = None 
+
+def remove(filename,  symbols):
+    with open(filename, "r+") as document:
+        data = document.read()
+        for symbol in symbols:
+            data = data.replace(symbol, "")
+        document.seek(0)
+        document.write(data)
+
+
+options_preopen = {
+        "remove": remove
+        }
+
 
 def headers_match_format(headers, format_json):
     if headers != list(format_json["fields"].keys()):
@@ -10,10 +28,17 @@ def headers_match_format(headers, format_json):
 
 def main(format_filename, filename, output_filename):
 
-    with open(format_filename, "r") as format_file:
-        format_json = json.loads(format_file.read())
+    temp_path = pathlib.Path("/tmp") / filename.name
+    shutil.copyfile(filename, temp_path)
 
-    with open(filename, "r") as document:
+    with open(format_filename, "r",errors="ignore") as format_file:
+        format_json = json.load(format_file)
+
+    for option in options_preopen.keys():
+        if option in format_json["options"]:
+            options_preopen[option](temp_path,format_json["options"][option])
+
+    with open(temp_path, "r",) as document:
         document_csv = csv.DictReader(document)
 
         headers_match_format(document_csv.fieldnames, format_json)
