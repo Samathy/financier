@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
+
 import csv
+import decimal
 import json
 import pathlib
 import shutil
@@ -17,14 +19,39 @@ def remove(filename,  symbols):
         document.write(data)
 
 
+def join_items(*args):
+    return " ".join(args)
+
+
+def sum_previous(current, previous_row, next_row):
+    return str(decimal.Decimal(current) + decimal.Decimal(previous_row))
+
+
 options_preopen = {
         "remove": remove
         }
 
+functions = {
+        "sum_previous": sum_previous
+        }
+
+operations = {
+        "join":join_items
+        }
 
 def headers_match_format(headers, format_json):
     if headers != list(format_json["fields"].keys()):
         raise RuntimeError("CSV Headers dont match format")
+
+def run_special(row, previous_row, next_row, format_json):
+    for key in format_json["fields"].keys():
+        if key[0] == "$":
+            row[format_json["fields"][key]["result"]] = functions[format_json["fields"][key]["name"]](
+                    [row[item] for item in format_json["fields"][key]["input"]][0],
+                    [previous_row[item] for item in format_json["fields"][key]["input"]][0],
+                    [next_row[item] for item in format_json["fields"][key]["input"]][0],
+                    )
+    return row
 
 def main(format_filename, filename, output_filename):
 

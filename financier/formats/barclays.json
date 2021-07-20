@@ -1,0 +1,14 @@
+{
+    "name": "barclays",
+    "fields":
+    {
+        "Number": "",
+        "Date": "date",
+        "Account": "",
+        "Amount":["in", "out"],
+        "Subcategory": "",
+        "Memo": "",
+        "%"join":["Subcategory", "Memo"]": "description",
+        "$"func":{"name":"sum_previous", "input":["Amount"]}": "balance"
+    },
+}
