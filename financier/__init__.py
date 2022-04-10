@@ -62,7 +62,7 @@ def main(format_filename, filename, output_filename):
         format_json = json.load(format_file)
 
     for option in options_preopen.keys():
-        if option in format_json["options"]:
+        if option in format_json.get("options", []):
             options_preopen[option](temp_path,format_json["options"][option])
 
     with open(temp_path, "r",) as document:
