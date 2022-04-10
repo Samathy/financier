@@ -7,8 +7,17 @@
         "Account": "",
         "Amount":["in", "out"],
         "Subcategory": "",
-        "Memo": "",
-        "%"join":["Subcategory", "Memo"]": "description",
-        "$"func":{"name":"sum_previous", "input":["Amount"]}": "balance"
+        "Memo": ""
     },
+    "functions": [
+        {"name": "join",
+                 "input": ["Subcategory", "Memo"],
+                 "output": "description"
+        },
+        {
+            "name": "sum_previous",
+            "input": ["Amount"],
+            "output": "balance"
+        }
+    ]
 }
