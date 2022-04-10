@@ -40,7 +40,7 @@ operations = {
         }
 
 def headers_match_format(headers, format_json):
-    if headers != list(format_json["fields"].keys()):
+    if headers != list(key for key in format_json["fields"].keys() if not key[0] in ["$", "%"]):
         raise RuntimeError("CSV Headers dont match format")
 
 def run_special(row, previous_row, next_row, format_json):
