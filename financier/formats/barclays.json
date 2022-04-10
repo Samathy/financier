@@ -19,5 +19,9 @@
             "input": ["Amount"],
             "output": ["in", "out"]
         }
-    ]
+    ],
+    "options":
+    {
+        "reverse":""
+    }
 }

@@ -11,7 +11,10 @@ output_fieldnames = [ "date", "description", "in", "out", "balance", ]
 temp_path = None 
 
 def no_negatives(i):
-    return decimal.Decimal(i) * -1
+    if decimal.Decimal(i) < 0:
+        return decimal.Decimal(i) * -1
+    else:
+        return decimal.Decimal(i)
 
 def remove(filename,  symbols):
     with open(filename, "r+") as document:
@@ -37,10 +40,8 @@ def sum_previous(current, previous_row, input_data, output_fields):
 def val_to_in_out(current, previous_row, input_data, output_fields):
     val = current[input_data[0]]
     if decimal.Decimal(val) > 0:
-        print({output_fields[0]:no_negatives(val), output_fields[1]:""})
         return {output_fields[0]:no_negatives(val), output_fields[1]:""}
     else:
-        print({output_fields[0]:"", output_fields[1]:no_negatives(val)})
         return {output_fields[0]:"", output_fields[1]:no_negatives(val)}
 
 
@@ -80,6 +81,10 @@ def main(format_filename, filename, output_filename):
         if option in format_json.get("options", []):
             options_preopen[option](temp_path,format_json["options"][option])
 
+    order_range = lambda x: list(x)
+    if "reverse" in format_json.get("options", []):
+        order_range = lambda x: reversed(list(x))
+
     functions_to_run = format_json["functions"]
 
     with open(temp_path, "r",) as document:
@@ -90,7 +95,7 @@ def main(format_filename, filename, output_filename):
             output_csv = csv.DictWriter(output_file, fieldnames=output_fieldnames)
             output_csv.writeheader()
             previous_row = None
-            for row in document_csv:
+            for row in order_range(document_csv):
                 writeable_row = run_special(row, previous_row, functions_to_run, format_json)
                 for key, value in row.items():
                     if format_json["fields"][key] in output_fieldnames:
