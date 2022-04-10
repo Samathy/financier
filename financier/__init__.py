@@ -11,8 +11,7 @@ output_fieldnames = [ "date", "description", "in", "out", "balance", ]
 temp_path = None 
 
 def no_negatives(i):
-    return i * -1
-
+    return decimal.Decimal(i) * -1
 
 def remove(filename,  symbols):
     with open(filename, "r+") as document:
@@ -23,17 +22,27 @@ def remove(filename,  symbols):
         document.write(data)
 
 
-def join_items(current_row, previous_row, input_data):
+def join_items(current_row, previous_row, input_data, output_fields):
     output = ""
     for item in input_data:
         output = f"{output} {current_row[item]}"
-    return output
+    return {output_fields:output}
 
 
-def sum_previous(current, previous_row, input_data):
+def sum_previous(current, previous_row, input_data, output_fields):
     if previous_row == None:
         previous_row = {input_data[0]:0}
-    return str(decimal.Decimal(current[input_data[0]]) + decimal.Decimal(previous_row[input_data[0]]))
+    return {output_fields:str(decimal.Decimal(current[input_data[0]]) + decimal.Decimal(previous_row[input_data[0]]))}
+
+def val_to_in_out(current, previous_row, input_data, output_fields):
+    val = current[input_data[0]]
+    if decimal.Decimal(val) > 0:
+        print({output_fields[0]:no_negatives(val), output_fields[1]:""})
+        return {output_fields[0]:no_negatives(val), output_fields[1]:""}
+    else:
+        print({output_fields[0]:"", output_fields[1]:no_negatives(val)})
+        return {output_fields[0]:"", output_fields[1]:no_negatives(val)}
+
 
 options_preopen = {
         "remove": remove
@@ -41,7 +50,8 @@ options_preopen = {
 
 functions = {
         "sum_previous": sum_previous,
-        "join":join_items
+        "join":join_items,
+        "single_to_in_out":val_to_in_out
         }
 
 operations = {
@@ -55,7 +65,7 @@ def run_special(row, previous_row, functions_to_run, format_json):
     output = {}
     for function in functions_to_run:
         callable_f = functions[function["name"]]
-        output[function["output"]] = callable_f(row, previous_row, function["input"])
+        output.update(callable_f(row, previous_row, function["input"], function["output"]))
     return output
 
 def main(format_filename, filename, output_filename):

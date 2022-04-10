@@ -5,7 +5,7 @@
         "Number": "",
         "Date": "date",
         "Account": "",
-        "Amount":["in", "out"],
+        "Amount": "",
         "Subcategory": "",
         "Memo": ""
     },
@@ -15,9 +15,9 @@
                  "output": "description"
         },
         {
-            "name": "sum_previous",
+            "name": "single_to_in_out",
             "input": ["Amount"],
-            "output": "balance"
+            "output": ["in", "out"]
         }
     ]
 }
