@@ -99,6 +99,10 @@ def main(format_filename, filename, output_filename):
                 writeable_row = run_special(row, previous_row, functions_to_run, format_json)
                 for key, value in row.items():
                     if format_json["fields"][key] in output_fieldnames:
-                        writeable_row[format_json["fields"][key]]= value
+                        try:
+                            writeable_row[format_json["fields"][key]]= no_negatives(value)
+                        except decimal.InvalidOperation:
+                            writeable_row[format_json["fields"][key]]= value
+
                 output_csv.writerow(writeable_row)
                 previous_row = row 
