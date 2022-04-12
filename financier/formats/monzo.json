@@ -1,0 +1,29 @@
+{
+    "name": "monzo",
+    "fields":
+    {
+       "Transaction ID":"",
+       "Date":"date",
+       "Time":"",
+       "Type":"",
+       "Name":"",
+       "Emoji":"",
+       "Category":"",
+       "Amount":"",
+       "Currency":"",
+       "Local amount":"",
+       "Local currency":"",
+       "Notes and #tags":"",
+       "Address":"",
+       "Receipt":"",
+       "Description":"",
+       "Category split":"",
+       "Money Out":"out",
+       "Money In":"in"
+    },
+    "functions": [
+        {"name": "join",
+                 "input": ["Description", "Notes and #tags"],
+                 "output": "description"
+        }]
+}
