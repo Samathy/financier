@@ -85,7 +85,7 @@ def main(format_filename, filename, output_filename):
     if "reverse" in format_json.get("options", []):
         order_range = lambda x: reversed(list(x))
 
-    functions_to_run = format_json["functions"]
+    functions_to_run = format_json.get("functions", [])
 
     with open(temp_path, "r",) as document:
         document_csv = csv.DictReader(document)
