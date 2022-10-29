@@ -11,6 +11,9 @@ output_fieldnames = [ "date", "description", "in", "out", "balance", ]
 temp_path = None 
 
 def no_negatives(i):
+    if i == None:
+        return i
+
     if decimal.Decimal(i) < 0:
         return decimal.Decimal(i) * -1
     else:
@@ -39,6 +42,10 @@ def sum_previous(current, previous_row, input_data, output_fields):
 
 def val_to_in_out(current, previous_row, input_data, output_fields):
     val = current[input_data[0]]
+
+    if val == None:
+        return {output_fields[0]:"", output_fields[1]:""}
+
     if decimal.Decimal(val) > 0:
         return {output_fields[0]:no_negatives(val), output_fields[1]:""}
     else:
